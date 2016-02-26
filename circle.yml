@@ -4,15 +4,15 @@ machine:
 
 dependencies:
   override:
-    - "mvn dependency:go-offline -f core"
+    - "mvn dependency:go-offline"
   cache_directories:
     - "~/.m2"
 
 test:
   override:
-    - "mvn clean install site -f core"
+    - "mvn clean install site"
 
 general:
   artifacts:
-    - "core/target/*.jar"
-    - "core/target/site"
+    - "target/*.jar"
+    - "target/site"

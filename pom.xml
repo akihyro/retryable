@@ -10,8 +10,8 @@
     <packaging>jar</packaging>
 
     <name>retryable-core</name>
-    <description>Retryable Core Library</description>
-    <url>https://github.com/akihyro/retryable</url>
+    <description>Retryable Core Module</description>
+    <url>https://github.com/akihyro/retryable-core</url>
 
     <organization>
         <name>rakugakibox.net</name>
@@ -26,19 +26,19 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/akihyro/retryable</url>
-        <connection>scm:git:git@github.com:akihyro/retryable.git</connection>
-        <developerConnection>scm:git:git@github.com:akihyro/retryable.git</developerConnection>
+        <url>https://github.com/akihyro/retryable-core</url>
+        <connection>scm:git:git@github.com:akihyro/retryable-core.git</connection>
+        <developerConnection>scm:git:git@github.com:akihyro/retryable-core.git</developerConnection>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/akihyro/retryable/issues</url>
+        <url>https://github.com/akihyro/retryable-core/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <ciManagement>
         <system>CircleCI</system>
-        <url>https://circleci.com/gh/akihyro/retryable</url>
+        <url>https://circleci.com/gh/akihyro/retryable-core</url>
     </ciManagement>
 
     <developers>
@@ -157,7 +157,7 @@
                     <dotGitDirectory>../.git</dotGitDirectory>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <generateGitPropertiesFilename>
-                        ${project.build.outputDirectory}/net/rakugakibox/retryable-git.properties
+                        ${project.build.outputDirectory}/net/rakugakibox/retryable/core/retryable-core-git.properties
                     </generateGitPropertiesFilename>
                     <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
                     <verbose>false</verbose>

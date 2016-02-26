@@ -1,10 +1,10 @@
-retryable
-=========
+retryable-core
+==============
 
 Status
 ------
 
-[![Circle CI](https://circleci.com/gh/akihyro/retryable.svg?style=shield)](https://circleci.com/gh/akihyro/retryable)
+[![Circle CI](https://circleci.com/gh/akihyro/retryable-core.svg?style=shield)](https://circleci.com/gh/akihyro/retryable-core)
 
 License
 -------
