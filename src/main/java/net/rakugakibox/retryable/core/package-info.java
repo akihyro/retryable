@@ -1,4 +1,4 @@
 /**
- * Retryable Core Library.
+ * Retryable Core Module.
  */
 package net.rakugakibox.retryable.core;
