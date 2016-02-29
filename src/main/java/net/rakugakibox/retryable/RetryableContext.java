@@ -17,7 +17,7 @@ public class RetryableContext {
     /**
      * Exceptions that occurred in function.
      */
-    List<Throwable> exceptions = new ArrayList<>();
+    List<Exception> exceptions = new ArrayList<>();
 
     /**
      * Return number of times.
@@ -33,7 +33,7 @@ public class RetryableContext {
      *
      * @return exceptions that occurred in function.
      */
-    public List<Throwable> exceptions() {
+    public List<Exception> exceptions() {
         return unmodifiableList(exceptions);
     }
 

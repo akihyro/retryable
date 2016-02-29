@@ -21,7 +21,7 @@ public class Retryable {
     /**
      * Retrying exception classes.
      */
-    Collection<Class<? extends Throwable>> exceptions = singletonList(Throwable.class);
+    Collection<Class<? extends Exception>> exceptions = singletonList(Exception.class);
 
     /**
      * Retrying interval..
@@ -48,7 +48,7 @@ public class Retryable {
      */
     @SafeVarargs
     @SuppressWarnings("varargs")
-    public final Retryable on(@NonNull Class<? extends Throwable>... exceptions) {
+    public final Retryable on(@NonNull Class<? extends Exception>... exceptions) {
         return on(asList(exceptions));
     }
 
@@ -58,7 +58,7 @@ public class Retryable {
      * @param exceptions retrying exception classes.
      * @return this instance.
      */
-    public Retryable on(@NonNull Collection<Class<? extends Throwable>> exceptions) {
+    public Retryable on(@NonNull Collection<Class<? extends Exception>> exceptions) {
         this.exceptions = unmodifiableList(new ArrayList<>(exceptions));
         return this;
     }
@@ -88,7 +88,7 @@ public class Retryable {
             try {
                 context.times++;
                 return function.apply(context);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 context.exceptions.add(exc);
                 if (!exceptions.stream().anyMatch(c -> c.isInstance(exc))) {
                     throw new RuntimeException(exc);  // TODO: Add original exception class.

@@ -13,8 +13,8 @@ public interface RetryableFunction<T> {
      *
      * @param context context of the function.
      * @return result of the function.
-     * @throws Throwable if an exception occurs in the function.
+     * @throws Exception if an exception occurs in the function.
      */
-    T apply(RetryableContext context) throws Throwable;
+    T apply(RetryableContext context) throws Exception;
 
 }
