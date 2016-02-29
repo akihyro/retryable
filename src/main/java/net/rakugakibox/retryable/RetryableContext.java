@@ -20,6 +20,12 @@ public class RetryableContext {
     List<Exception> exceptions = new ArrayList<>();
 
     /**
+     * Constructor.
+     */
+    RetryableContext() {
+    }
+
+    /**
      * Return number of times.
      *
      * @return number of times.
