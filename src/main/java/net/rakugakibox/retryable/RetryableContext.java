@@ -1,4 +1,4 @@
-package net.rakugakibox.retryable.core;
+package net.rakugakibox.retryable;
 
 import java.util.ArrayList;
 import static java.util.Collections.unmodifiableList;

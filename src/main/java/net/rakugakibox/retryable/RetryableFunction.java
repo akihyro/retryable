@@ -1,4 +1,4 @@
-package net.rakugakibox.retryable.core;
+package net.rakugakibox.retryable;
 
 /**
  * Retryable function.

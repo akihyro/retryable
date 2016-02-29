@@ -1,11 +1,13 @@
-retryable-core
-==============
+retryable
+=========
+
+Java Library: Retryable.
 
 Status
 ------
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.rakugakibox.retryable/retryable-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.rakugakibox.retryable/retryable-core)
-[![Circle CI](https://circleci.com/gh/akihyro/retryable-core.svg?style=shield)](https://circleci.com/gh/akihyro/retryable-core)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.rakugakibox.retryable/retryable/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.rakugakibox.retryable/retryable)
+[![Circle CI](https://circleci.com/gh/akihyro/retryable.svg?style=shield)](https://circleci.com/gh/akihyro/retryable)
 
 License
 -------
