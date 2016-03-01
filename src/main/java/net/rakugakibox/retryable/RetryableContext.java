@@ -3,10 +3,14 @@ package net.rakugakibox.retryable;
 import java.util.ArrayList;
 import static java.util.Collections.unmodifiableList;
 import java.util.List;
+import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Retryable context.
+ * This class has the running information.
  */
+@RequiredArgsConstructor(access = AccessLevel.MODULE)
 public class RetryableContext {
 
     /**
@@ -15,32 +19,37 @@ public class RetryableContext {
     long times = 0;
 
     /**
-     * Exceptions that occurred in function.
+     * Exceptions that occurred.
      */
-    List<Exception> exceptions = new ArrayList<>();
+    final List<Exception> exceptions = new ArrayList<>();
 
     /**
-     * Constructor.
-     */
-    RetryableContext() {
-    }
-
-    /**
-     * Return number of times.
+     * Return the number of times.
      *
-     * @return number of times.
+     * @return the number of times.
      */
     public long times() {
         return times;
     }
 
     /**
-     * Return exceptions that occurred in function.
+     * Return the exceptions that occurred.
      *
-     * @return exceptions that occurred in function.
+     * @return the exceptions that occurred.
      */
     public List<Exception> exceptions() {
         return unmodifiableList(exceptions);
+    }
+
+    /**
+     * Return the last exception that occurred.
+     *
+     * @return the last exception that occurred.
+     */
+    public Optional<Exception> exception() {
+        return exceptions.isEmpty()
+                ? Optional.empty()
+                : Optional.of(exceptions.get(exceptions.size() - 1));
     }
 
 }
