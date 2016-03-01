@@ -9,7 +9,7 @@ import static java.util.Collections.unmodifiableList;
 import lombok.NonNull;
 
 /**
- * Retryable main class.
+ * The main class of "Retryable".
  */
 public class Retryable {
 
@@ -24,7 +24,7 @@ public class Retryable {
     Collection<Class<? extends Exception>> exceptions = singletonList(Exception.class);
 
     /**
-     * Retrying interval..
+     * Retrying interval.
      */
     Duration interval = Duration.ZERO;
 
