@@ -13,7 +13,7 @@ public class CannotRetryException extends RuntimeException {
     /**
      * Constructor.
      */
-    public CannotRetryException() {
+    CannotRetryException() {
     }
 
     /**
@@ -21,7 +21,7 @@ public class CannotRetryException extends RuntimeException {
      *
      * @param message the detail message.
      */
-    public CannotRetryException(String message) {
+    CannotRetryException(String message) {
         super(message);
     }
 
@@ -30,7 +30,7 @@ public class CannotRetryException extends RuntimeException {
      *
      * @param cause the cause.
      */
-    public CannotRetryException(Throwable cause) {
+    CannotRetryException(Throwable cause) {
         super(cause);
     }
 
@@ -40,7 +40,7 @@ public class CannotRetryException extends RuntimeException {
      * @param message the detail message.
      * @param cause the cause.
      */
-    public CannotRetryException(String message, Throwable cause) {
+    CannotRetryException(String message, Throwable cause) {
         super(message, cause);
     }
 
