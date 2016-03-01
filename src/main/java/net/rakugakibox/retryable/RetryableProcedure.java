@@ -2,20 +2,17 @@ package net.rakugakibox.retryable;
 
 /**
  * This functional interface represents a retryable function.
- * It has a return value.
- *
- * @param <T> result type.
+ * It does not have a return value.
  */
 @FunctionalInterface
-public interface RetryableFunction<T> {
+public interface RetryableProcedure {
 
     /**
      * Run the function.
      *
      * @param context the context.
-     * @return the result.
      * @throws Exception if an exception occurs.
      */
-    T run(RetryableContext context) throws Exception;
+    void run(RetryableContext context) throws Exception;
 
 }

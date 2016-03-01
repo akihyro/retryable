@@ -87,7 +87,7 @@ public class Retryable {
         while (context.times < tries) {
             try {
                 context.times++;
-                return function.apply(context);
+                return function.run(context);
             } catch (Exception exc) {
                 context.exceptions.add(exc);
                 if (!exceptions.stream().anyMatch(c -> c.isInstance(exc))) {
