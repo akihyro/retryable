@@ -1,47 +1,39 @@
 package net.rakugakibox.retryable;
 
 /**
- * This exception is thrown, if can not retry.
+ * This exception is thrown when the retryable function cannot be retried.
  */
 public class CannotRetryException extends RuntimeException {
 
     /**
-     * Serial version UID.
+     * The serial version UID.
      */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructor.
+     * the context.
      */
-    CannotRetryException() {
-    }
+    private final RetryableContext context;
 
     /**
-     * Constructor.
-     *
-     * @param message the detail message.
-     */
-    CannotRetryException(String message) {
-        super(message);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param cause the cause.
-     */
-    CannotRetryException(Throwable cause) {
-        super(cause);
-    }
-
-    /**
-     * Constructor.
+     * Constructs a new instance.
      *
      * @param message the detail message.
      * @param cause the cause.
+     * @param context the context.
      */
-    CannotRetryException(String message, Throwable cause) {
+    CannotRetryException(String message, Throwable cause, RetryableContext context) {
         super(message, cause);
+        this.context = context;
+    }
+
+    /**
+     * Returns the context.
+     *
+     * @return the context.
+     */
+    public RetryableContext context() {
+        return context;
     }
 
 }
