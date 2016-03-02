@@ -1,7 +1,7 @@
 package net.rakugakibox.retryable;
 
 /**
- * This exception is thrown when the retryable function cannot be retried.
+ * Indicates that could not be retried.
  */
 public class CannotRetryException extends RuntimeException {
 
@@ -11,7 +11,7 @@ public class CannotRetryException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * the context.
+     * The context.
      */
     private final RetryableContext context;
 

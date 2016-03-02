@@ -8,23 +8,23 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 /**
- * This class has the running information.
+ * Has the running information.
  */
 @RequiredArgsConstructor(access = AccessLevel.MODULE)
 public class RetryableContext {
 
     /**
-     * Number of times.
+     * The number of times.
      */
     long times = 0;
 
     /**
-     * Exceptions that occurred.
+     * The exceptions that occurred.
      */
     final List<Exception> exceptions = new ArrayList<>();
 
     /**
-     * Return the number of times.
+     * Returns the number of times.
      *
      * @return the number of times.
      */
@@ -33,7 +33,7 @@ public class RetryableContext {
     }
 
     /**
-     * Return the exceptions that occurred.
+     * Returns the exceptions that occurred.
      *
      * @return the exceptions that occurred.
      */
@@ -42,7 +42,8 @@ public class RetryableContext {
     }
 
     /**
-     * Return the last exception that occurred.
+     * Returns the last exception that occurred.
+     * The first time, returns an empty.
      *
      * @return the last exception that occurred.
      */

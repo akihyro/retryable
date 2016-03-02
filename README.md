@@ -1,7 +1,10 @@
-retryable
+Retryable
 =========
 
-Java Library: Retryable.
+This is a module for the Java 8+.  
+
+The module provides a retry of the code block.  
+Runs a code block, and retries it when an exception occurs.  
 
 Status
 ------
@@ -12,4 +15,4 @@ Status
 License
 -------
 
-Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).  

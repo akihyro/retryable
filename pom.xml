@@ -9,8 +9,11 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>retryable</name>
-    <description>Java Library: Retryable</description>
+    <name>Retryable</name>
+    <description>
+        The module provides a retry of the code block.
+        Runs a code block, and retries it when an exception occurs.
+    </description>
     <url>https://github.com/akihyro/retryable</url>
 
     <organization>

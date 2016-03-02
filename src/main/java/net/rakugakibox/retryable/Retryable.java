@@ -82,7 +82,7 @@ public class Retryable {
      * @param function retryable function.
      * @return result of the function.
      */
-    public <T> T run(@NonNull RetryableTypedFunction<T> function) {
+    public <T> T run(@NonNull RetryableFunction<T> function) {
         RetryableContext context = new RetryableContext();
         while (context.times < tries) {
             try {
