@@ -16,17 +16,17 @@ public class Retryable {
     /**
      * Number of tries.
      */
-    long tries = 2;
+    private long tries = 2;
 
     /**
      * Retrying exception classes.
      */
-    Collection<Class<? extends Exception>> exceptions = singletonList(Exception.class);
+    private Collection<Class<? extends Exception>> exceptions = singletonList(Exception.class);
 
     /**
      * Retrying interval.
      */
-    Duration interval = Duration.ZERO;
+    private Duration interval = Duration.ZERO;
 
     /**
      * Set number of tries.
@@ -84,12 +84,11 @@ public class Retryable {
      */
     public <T> T run(@NonNull RetryableFunction<T> function) {
         RetryableContext context = new RetryableContext();
-        while (context.times < tries) {
+        while (context.times() < tries) {
             try {
-                context.times++;
-                return function.run(context);
+                return function.run(context.next());
             } catch (Exception exc) {
-                context.exceptions.add(exc);
+                context.fail(exc);
                 if (!exceptions.stream().anyMatch(c -> c.isInstance(exc))) {
                     throw new RuntimeException(exc);  // TODO: Add original exception class.
                 }

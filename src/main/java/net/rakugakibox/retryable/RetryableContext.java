@@ -5,6 +5,7 @@ import static java.util.Collections.unmodifiableList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -16,12 +17,33 @@ public class RetryableContext {
     /**
      * The number of times.
      */
-    long times = 0;
+    private long times = 0;
 
     /**
      * The exceptions that occurred.
      */
-    final List<Exception> exceptions = new ArrayList<>();
+    private final List<Exception> exceptions = new ArrayList<>();
+
+    /**
+     * Advances the times.
+     *
+     * @return the this instance.
+     */
+    RetryableContext next() {
+        times++;
+        return this;
+    }
+
+    /**
+     * Fails the times.
+     *
+     * @param cause the cause.
+     * @return the this instance.
+     */
+    RetryableContext fail(@NonNull Exception cause) {
+        exceptions.add(cause);
+        return this;
+    }
 
     /**
      * Returns the number of times.
