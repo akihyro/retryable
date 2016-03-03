@@ -17,7 +17,7 @@ public class RetryableContext {
     /**
      * The number of times.
      */
-    private long times = 0;
+    private int times = 0;
 
     /**
      * The exceptions that occurred.
@@ -50,7 +50,7 @@ public class RetryableContext {
      *
      * @return the number of times.
      */
-    public long times() {
+    public int times() {
         return times;
     }
 
