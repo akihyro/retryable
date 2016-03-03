@@ -1,101 +1,120 @@
 package net.rakugakibox.retryable;
 
+import static java.lang.Thread.sleep;
 import java.time.Duration;
-import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.Collection;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.unmodifiableList;
 import lombok.NonNull;
 
 /**
- * The main class of "Retryable".
+ * Provides a retry of the code block.
  */
 public class Retryable {
 
     /**
-     * Number of tries.
+     * The retry handler.
      */
-    private long tries = 2;
+    private RetryHandler handler = RetryHandler.nop();
 
     /**
-     * Retrying exception classes.
-     */
-    private Collection<Class<? extends Exception>> exceptions = singletonList(Exception.class);
-
-    /**
-     * Retrying interval.
-     */
-    private Duration interval = Duration.ZERO;
-
-    /**
-     * Set number of tries.
-     * Should an exception occur, it'll retry for {@code (tries - 1)} times.
+     * Limits the number of retries.
+     * Should an exception occur, it'll retry for {@code (retries)} times.
      *
-     * @param tries number of tries.
-     * @return this instance.
+     * @param retries the maximum number of retries.
+     * @return the this instance.
      */
-    public Retryable tries(long tries) {
-        this.tries = tries;
+    public Retryable retries(int retries) {
+        if (retries < 0) {
+            throw new IllegalArgumentException("retries < 0");
+        }
+        handler = handler.andThen(context -> {
+            if (context.times() <= retries) {
+                Exception exc = context.exception().get();
+                throw new CannotRetryException("Maximum number of retry attempts reached", exc, context);
+            }
+        });
         return this;
     }
 
     /**
-     * Set retrying exception classes.
+     * Limits the number of tries.
+     * Should an exception occur, it'll retry for {@code (tries - 1)} times.
      *
-     * @param exceptions retrying exception classes.
-     * @return this instance.
+     * @param tries the maximum number of tries.
+     * @return the this instance.
+     */
+    public Retryable tries(int tries) {
+        return retries(tries - 1);
+    }
+
+    /**
+     * Limits the retryable exception types.
+     *
+     * @param types the retryable exception types.
+     * @return the this instance.
+     */
+    public Retryable on(@NonNull Collection<Class<? extends Exception>> types) {
+        handler = handler.andThen(context -> {
+            Exception exc = context.exception().get();
+            if (types.stream().anyMatch(type -> type.isInstance(exc))) {
+                throw new CannotRetryException("An exception type did not match", exc, context);
+            }
+        });
+        return this;
+    }
+
+    /**
+     * Limits the retryable exception types.
+     *
+     * @param types the retryable exception types.
+     * @return the this instance.
      */
     @SafeVarargs
     @SuppressWarnings("varargs")
-    public final Retryable on(@NonNull Class<? extends Exception>... exceptions) {
-        return on(asList(exceptions));
+    public final Retryable on(@NonNull Class<? extends Exception>... types) {
+        return on(asList(types));
     }
 
     /**
-     * Set retrying exception classes.
+     * Adds the interval.
      *
-     * @param exceptions retrying exception classes.
-     * @return this instance.
-     */
-    public Retryable on(@NonNull Collection<Class<? extends Exception>> exceptions) {
-        this.exceptions = unmodifiableList(new ArrayList<>(exceptions));
-        return this;
-    }
-
-    /**
-     * Set retrying interval.
-     *
-     * @param interval retrying interval.
-     * @return this instance.
+     * @param interval the interval.
+     * @return the this instance.
      */
     public Retryable interval(@NonNull Duration interval) {
-        this.interval = interval;
+        handler = handler.andThen(context -> {
+            try {
+                sleep(interval.toMillis(), interval.getNano());
+            } catch (InterruptedException exc) {
+                throw new CannotRetryException(exc.getMessage(), exc, context);
+            }
+        });
         return this;
     }
 
     /**
-     * Run the specified function.
-     * If an particular exception occurs, retries.
+     * Returns the runner.
      *
-     * @param <T> result type of the function.
-     * @param function retryable function.
-     * @return result of the function.
+     * @param <T> the result type.
+     * @param function the retryable function.
+     * @return the runner.
      */
-    public <T> T run(@NonNull RetryableFunction<T> function) {
-        RetryableContext context = new RetryableContext();
-        while (context.times() < tries) {
-            try {
-                return function.run(context.next());
-            } catch (Exception exc) {
-                context.fail(exc);
-                if (!exceptions.stream().anyMatch(c -> c.isInstance(exc))) {
-                    throw new RuntimeException(exc);  // TODO: Add original exception class.
-                }
-            }
-            // TODO: Thread.sleep(interval.toMillis(), interval.getNano());
-        }
-        throw new RuntimeException();  // TODO: Add original exception class.
+    public <T> RetryableRunner<T> wrap(RetryableFunction<T> function) {
+        return new RetryableRunner<>(function, handler);
+    }
+
+    /**
+     * Returns the runner.
+     * The runner always returns null.
+     *
+     * @param function the retryable function.
+     * @return the runner.
+     */
+    public RetryableRunner<?> wrap(RetryableVoidFunction function) {
+        return wrap(context -> {
+            function.run(context);
+            return null;
+        });
     }
 
 }
