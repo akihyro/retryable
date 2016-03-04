@@ -27,7 +27,7 @@ public class RetryableContext {
     /**
      * Advances the times.
      *
-     * @return the this instance.
+     * @return this instance.
      */
     RetryableContext next() {
         times++;
@@ -38,7 +38,7 @@ public class RetryableContext {
      * Fails the times.
      *
      * @param cause the cause.
-     * @return the this instance.
+     * @return this instance.
      */
     RetryableContext fail(@NonNull Exception cause) {
         exceptions.add(cause);

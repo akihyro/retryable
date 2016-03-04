@@ -22,7 +22,7 @@ public class Retryable {
      * Adds the retry processing.
      *
      * @param handler the retry handler.
-     * @return the this instance.
+     * @return this instance.
      */
     public Retryable on(@NonNull RetryHandler handler) {
         log.debug("Adds the retry processing: {}", handler);
@@ -34,7 +34,7 @@ public class Retryable {
      * Limits the retryable exception types.
      *
      * @param types the retryable exception types.
-     * @return the this instance.
+     * @return this instance.
      */
     public Retryable on(@NonNull Collection<Class<? extends Exception>> types) {
         log.debug("Limits the retryable exception types: {}", types);
@@ -52,7 +52,7 @@ public class Retryable {
      * Limits the retryable exception types.
      *
      * @param types the retryable exception types.
-     * @return the this instance.
+     * @return this instance.
      */
     @SafeVarargs
     @SuppressWarnings("varargs")
@@ -65,7 +65,7 @@ public class Retryable {
      * Should an exception occur, it'll retry for {@code (retries)} times.
      *
      * @param retries the maximum number of retries.
-     * @return the this instance.
+     * @return this instance.
      */
     public Retryable retries(int retries) {
         log.debug("Limits the number of retries: {}", retries);
@@ -88,7 +88,7 @@ public class Retryable {
      * Should an exception occur, it'll retry for {@code (tries - 1)} times.
      *
      * @param tries the maximum number of tries.
-     * @return the this instance.
+     * @return this instance.
      */
     public Retryable tries(int tries) {
         return retries(tries - 1);
@@ -98,7 +98,7 @@ public class Retryable {
      * Adds the interval.
      *
      * @param interval the duration.
-     * @return the this instance.
+     * @return this instance.
      */
     public Retryable interval(@NonNull Duration duration) {
         log.debug("Adds the interval: {}", duration);
