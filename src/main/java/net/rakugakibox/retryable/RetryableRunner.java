@@ -2,6 +2,7 @@ package net.rakugakibox.retryable;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Provides the execution process of a retryable function and a retry handler.
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
  * @param <T> the result type.
  */
 @RequiredArgsConstructor(access = AccessLevel.MODULE)
+@Slf4j
 public class RetryableRunner<T> {
 
     /**
@@ -29,12 +31,22 @@ public class RetryableRunner<T> {
      */
     public T run() throws CannotRetryException {
         RetryableContext context = new RetryableContext();
-        while (true) {
-            try {
-                return function.run(context.next());
-            } catch (Exception exc) {
-                handler.handle(context.fail(exc));
+        try {
+            while (true) {
+                try {
+                    context.next();
+                    log.debug("Runs the function: function={}, context={}", function, context);
+                    return function.run(context);
+                } catch (Exception exception) {
+                    context.fail(exception);
+                    log.debug("Function failed. Runs the retry handleer: "
+                            + "exception={}, handler={}, context={}", exception, handler, context);
+                    handler.handle(context);
+                }
             }
+        } catch (CannotRetryException exception) {
+            log.debug("CannotRetryException occurred: exception={}, context={}", exception, context);
+            throw exception;
         }
     }
 
