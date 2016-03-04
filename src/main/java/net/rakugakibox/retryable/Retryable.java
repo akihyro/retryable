@@ -28,7 +28,7 @@ public class Retryable {
             throw new IllegalArgumentException("retries < 0");
         }
         handler = handler.andThen(context -> {
-            if (context.times() <= retries) {
+            if (context.times() > retries) {
                 Exception exc = context.exception().get();
                 throw new CannotRetryException("Maximum number of retry attempts reached", exc, context);
             }
