@@ -75,4 +75,16 @@ public class RetryableContext {
                 : Optional.of(exceptions.get(exceptions.size() - 1));
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return RetryableContext.class.getSimpleName()
+                + "("
+                + times
+                + " times, "
+                + exceptions.size()
+                + " exceptions"
+                + ")";
+    }
+
 }
