@@ -97,7 +97,7 @@ public class Retryable {
     /**
      * Adds the interval.
      *
-     * @param interval the duration.
+     * @param duration the duration.
      * @return this instance.
      */
     public Retryable interval(@NonNull Duration duration) {
