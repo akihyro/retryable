@@ -19,38 +19,15 @@ public class Retryable {
     private RetryHandler handler = RetryHandler.nop();
 
     /**
-     * Limits the number of retries.
-     * Should an exception occur, it'll retry for {@code (retries)} times.
+     * Adds the retry processing.
      *
-     * @param retries the maximum number of retries.
+     * @param handler the retry handler.
      * @return the this instance.
      */
-    public Retryable retries(int retries) {
-        log.debug("Limits the number of retries: {}", retries);
-        if (retries < 0) {
-            throw new IllegalArgumentException("retries < 0");
-        }
-        handler = handler.andThen(context -> {
-            int times = context.times();
-            log.debug("Checks the limit of the maximum number of retries: times={}, retries={}", times, retries);
-            if (times > retries) {
-                log.debug("Maximum number of retry attempts reached: times={}, retries={}", times, retries);
-                throw new CannotRetryException(
-                        "Maximum number of retry attempts reached", context.exception().get(), context);
-            }
-        });
+    public Retryable on(@NonNull RetryHandler handler) {
+        log.debug("Adds the retry processing: {}", handler);
+        this.handler = this.handler.andThen(handler);
         return this;
-    }
-
-    /**
-     * Limits the number of tries.
-     * Should an exception occur, it'll retry for {@code (tries - 1)} times.
-     *
-     * @param tries the maximum number of tries.
-     * @return the this instance.
-     */
-    public Retryable tries(int tries) {
-        return retries(tries - 1);
     }
 
     /**
@@ -61,7 +38,7 @@ public class Retryable {
      */
     public Retryable on(@NonNull Collection<Class<? extends Exception>> types) {
         log.debug("Limits the retryable exception types: {}", types);
-        handler = handler.andThen(context -> {
+        return on(context -> {
             Exception exception = context.exception().get();
             log.debug("Checks the limit of the retryable exception types: exception={}, types={}", exception, types);
             if (types.stream().anyMatch(type -> type.isInstance(exception))) {
@@ -69,7 +46,6 @@ public class Retryable {
                 throw new CannotRetryException("An exception type did not match", exception, context);
             }
         });
-        return this;
     }
 
     /**
@@ -85,6 +61,40 @@ public class Retryable {
     }
 
     /**
+     * Limits the number of retries.
+     * Should an exception occur, it'll retry for {@code (retries)} times.
+     *
+     * @param retries the maximum number of retries.
+     * @return the this instance.
+     */
+    public Retryable retries(int retries) {
+        log.debug("Limits the number of retries: {}", retries);
+        if (retries < 0) {
+            throw new IllegalArgumentException("retries < 0");
+        }
+        return on(context -> {
+            int times = context.times();
+            log.debug("Checks the limit of the maximum number of retries: times={}, retries={}", times, retries);
+            if (times > retries) {
+                log.debug("Maximum number of retry attempts reached: times={}, retries={}", times, retries);
+                throw new CannotRetryException(
+                        "Maximum number of retry attempts reached", context.exception().get(), context);
+            }
+        });
+    }
+
+    /**
+     * Limits the number of tries.
+     * Should an exception occur, it'll retry for {@code (tries - 1)} times.
+     *
+     * @param tries the maximum number of tries.
+     * @return the this instance.
+     */
+    public Retryable tries(int tries) {
+        return retries(tries - 1);
+    }
+
+    /**
      * Adds the interval.
      *
      * @param interval the duration.
@@ -92,7 +102,7 @@ public class Retryable {
      */
     public Retryable interval(@NonNull Duration duration) {
         log.debug("Adds the interval: {}", duration);
-        handler = handler.andThen(context -> {
+        return on(context -> {
             try {
                 log.debug("Sleeps: duration={}", duration);
                 sleep(duration.toMillis(), duration.getNano());
@@ -101,7 +111,6 @@ public class Retryable {
                 throw new CannotRetryException("A sleep was interrupted", exception, context);
             }
         });
-        return this;
     }
 
     /**
