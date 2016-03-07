@@ -1,11 +1,12 @@
 package net.rakugakibox.retryable;
 
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Provides the execution process of a retryable function and a retry handler.
+ * Provides the execution of a retryable processing and a retry processing.
  *
  * @param <T> the result type.
  */
@@ -14,17 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 public class RetryableRunner<T> {
 
     /**
-     * The retryable function.
+     * The retryable processing.
      */
+    @NonNull
     private final RetryableFunction<T> function;
 
     /**
-     * The retry handler.
+     * The retry processing.
      */
+    @NonNull
     private final RetryHandler handler;
 
     /**
-     * Runs the retryable function and the retry handler.
+     * Runs the retryable processing and the retry processing.
      *
      * @return the result.
      * @throws CannotRetryException if cannot retry.

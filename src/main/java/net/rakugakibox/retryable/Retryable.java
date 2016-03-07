@@ -14,14 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 public class Retryable {
 
     /**
-     * The retry handler.
+     * The retry processing.
      */
     private RetryHandler handler = RetryHandler.nop();
 
     /**
      * Adds the retry processing.
      *
-     * @param handler the retry handler.
+     * @param handler the retry processing.
      * @return this instance.
      */
     public Retryable on(@NonNull RetryHandler handler) {
@@ -117,10 +117,10 @@ public class Retryable {
      * Returns the runner.
      *
      * @param <T> the result type.
-     * @param function the retryable function.
+     * @param function the retryable processing.
      * @return the runner.
      */
-    public <T> RetryableRunner<T> wrap(RetryableFunction<T> function) {
+    public <T> RetryableRunner<T> function(RetryableFunction<T> function) {
         return new RetryableRunner<>(function, handler);
     }
 
@@ -128,12 +128,12 @@ public class Retryable {
      * Returns the runner.
      * The runner always returns null.
      *
-     * @param function the retryable function.
+     * @param procedure the retryable processing.
      * @return the runner.
      */
-    public RetryableRunner<?> wrap(RetryableVoidFunction function) {
-        return wrap(context -> {
-            function.run(context);
+    public RetryableRunner<?> procedure(RetryableProcedure procedure) {
+        return function(context -> {
+            procedure.run(context);
             return null;
         });
     }

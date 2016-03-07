@@ -2,16 +2,17 @@ package net.rakugakibox.retryable;
 
 /**
  * Represents a retryable processing.
- * Does not have a context argument, and a return value.
+ * Has a context argument. Does not have a return value.
  */
 @FunctionalInterface
-public interface RetryableNonContextualVoidFunction {
+public interface RetryableProcedure {
 
     /**
      * Runs the retryable processing.
      *
+     * @param context the context.
      * @throws Exception if an exception occurs.
      */
-    void run() throws Exception;
+    void run(RetryableContext context) throws Exception;
 
 }
