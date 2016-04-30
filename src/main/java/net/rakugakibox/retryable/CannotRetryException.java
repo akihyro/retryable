@@ -1,7 +1,7 @@
 package net.rakugakibox.retryable;
 
 /**
- * Indicates that could not be retried.
+ * The exception that indicates could not be retried.
  */
 public class CannotRetryException extends RuntimeException {
 
@@ -16,13 +16,13 @@ public class CannotRetryException extends RuntimeException {
     private final RetryableContext context;
 
     /**
-     * Constructs a new instance.
+     * Constructs an instance.
      *
-     * @param message the detail message.
+     * @param message the message.
      * @param cause the cause.
      * @param context the context.
      */
-    CannotRetryException(String message, Throwable cause, RetryableContext context) {
+    public CannotRetryException(String message, Throwable cause, RetryableContext context) {
         super(message, cause);
         this.context = context;
     }

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 /**
- * Tests for {@link CannotRetryException}.
+ * The test of {@link CannotRetryException}.
  */
 public class CannotRetryExceptionTest {
 
@@ -13,11 +13,12 @@ public class CannotRetryExceptionTest {
      */
     @Test
     public void construct() {
-        Exception cause = new Exception("cause message");
+        String message = "the exception message";
+        Exception cause = new Exception("the cause message");
         RetryableContext context = new RetryableContext();
-        CannotRetryException exception = new CannotRetryException("exception message", cause, context);
+        CannotRetryException exception = new CannotRetryException(message, cause, context);
         assertThat(exception)
-                .hasMessage("exception message")
+                .hasMessage(message)
                 .hasCause(cause);
         assertThat(exception.context())
                 .isEqualTo(context);
