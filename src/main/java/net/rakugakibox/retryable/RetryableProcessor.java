@@ -38,7 +38,7 @@ public class RetryableProcessor<T> {
      * @return the result.
      * @throws CannotRetryException if cannot retry.
      */
-    T perform() throws CannotRetryException {
+    public T perform() throws CannotRetryException {
         RetryableContext context = new RetryableContext();
         try {
             while (true) {

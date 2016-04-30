@@ -2,19 +2,23 @@ package net.rakugakibox.retryable;
 
 import static java.lang.Thread.sleep;
 import java.time.Duration;
+import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.Collection;
+import static java.util.Collections.unmodifiableList;
+import java.util.concurrent.TimeUnit;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Provides a retry of the code block.
+ * Runs a code block, and retries it when an exception occurs.
  */
 @Slf4j
 public class Retryable {
 
     /**
-     * The retry processing.
+     * The retry handler.
      */
     private RetryHandler handler = RetryHandler.nop();
 
@@ -37,12 +41,14 @@ public class Retryable {
      * @return this instance.
      */
     public Retryable on(@NonNull Collection<Class<? extends Exception>> types) {
-        log.debug("Limits the retryable exception types: {}", types);
+        Collection<Class<? extends Exception>> unmodifiableTypes = unmodifiableList(new ArrayList<>(types));
+        log.debug("Limits the retryable exception types: {}", unmodifiableTypes);
         return on(context -> {
             Exception exception = context.exception().get();
-            log.debug("Checks the limit of the retryable exception types: exception={}, types={}", exception, types);
-            if (types.stream().anyMatch(type -> type.isInstance(exception))) {
-                log.debug("An exception type did not match: exception={}, types={}", exception, types);
+            log.debug("Checks the limit of the retryable exception types: "
+                    + "exception={}, types={}", exception, unmodifiableTypes);
+            if (!unmodifiableTypes.stream().anyMatch(type -> type.isInstance(exception))) {
+                log.debug("An exception type did not match: exception={}, types={}", exception, unmodifiableTypes);
                 throw new CannotRetryException("An exception type did not match", exception, context);
             }
         });
@@ -67,11 +73,8 @@ public class Retryable {
      * @param retries the maximum number of retries.
      * @return this instance.
      */
-    public Retryable retries(int retries) {
+    public Retryable retries(long retries) {
         log.debug("Limits the number of retries: {}", retries);
-        if (retries < 0) {
-            throw new IllegalArgumentException("retries < 0");
-        }
         return on(context -> {
             long times = context.times();
             log.debug("Checks the limit of the maximum number of retries: times={}, retries={}", times, retries);
@@ -90,8 +93,8 @@ public class Retryable {
      * @param tries the maximum number of tries.
      * @return this instance.
      */
-    public Retryable tries(int tries) {
-        return retries(tries - 1);
+    public Retryable tries(long tries) {
+        return retries(tries - 1L);
     }
 
     /**
@@ -111,6 +114,38 @@ public class Retryable {
                 throw new CannotRetryException("A sleep was interrupted", exception, context);
             }
         });
+    }
+
+    /**
+     * Adds the interval.
+     *
+     * @param duration the duration.
+     * @param unit the unit of duration.
+     * @return this instance.
+     */
+    public Retryable interval(long duration, TimeUnit unit) {
+        return interval(Duration.ofNanos(unit.toNanos(duration)));
+    }
+
+    /**
+     * Adds the interval.
+     *
+     * @param millis the duration in milliseconds.
+     * @param nanos the duration in nanoseconds.
+     * @return this instance.
+     */
+    public Retryable interval(long millis, int nanos) {
+        return interval(Duration.ofMillis(millis).withNanos(nanos));
+    }
+
+    /**
+     * Adds the interval.
+     *
+     * @param millis the duration in milliseconds.
+     * @return this instance.
+     */
+    public Retryable interval(long millis) {
+        return interval(Duration.ofMillis(millis));
     }
 
     /**
@@ -164,6 +199,62 @@ public class Retryable {
      */
     public RetryableProcessor<Void> procedure(RetryableProcess.NonContextualProcedure procedure) {
         return process(procedure);
+    }
+
+    /**
+     * Performs the retryable process, and handle the retry handler.
+     *
+     * @param <T> the result type.
+     * @param process the retryable process.
+     * @return the result.
+     * @throws CannotRetryException if cannot retry.
+     */
+    public <T> T perform(RetryableProcess<T> process) throws CannotRetryException {
+        return process(process).perform();
+    }
+
+    /**
+     * Calls the retryable process, and handle the retry handler.
+     *
+     * @param <T> the result type.
+     * @param function the retryable process.
+     * @return the result.
+     * @throws CannotRetryException if cannot retry.
+     */
+    public <T> T call(RetryableProcess.Function<T> function) throws CannotRetryException {
+        return function(function).perform();
+    }
+
+    /**
+     * Calls the retryable process, and handle the retry handler.
+     *
+     * @param <T> the result type.
+     * @param function the retryable process.
+     * @return the result.
+     * @throws CannotRetryException if cannot retry.
+     */
+    public <T> T call(RetryableProcess.NonContextualFunction<T> function) throws CannotRetryException {
+        return function(function).perform();
+    }
+
+    /**
+     * Runs the retryable process, and handle the retry handler.
+     *
+     * @param procedure the retryable process.
+     * @throws CannotRetryException if cannot retry.
+     */
+    public void run(RetryableProcess.Procedure procedure) throws CannotRetryException {
+        procedure(procedure).perform();
+    }
+
+    /**
+     * Runs the retryable process, and handle the retry handler.
+     *
+     * @param procedure the retryable process.
+     * @throws CannotRetryException if cannot retry.
+     */
+    public void run(RetryableProcess.NonContextualProcedure procedure) throws CannotRetryException {
+        procedure(procedure).perform();
     }
 
 }
