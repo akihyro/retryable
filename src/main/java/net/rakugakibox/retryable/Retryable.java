@@ -73,7 +73,7 @@ public class Retryable {
             throw new IllegalArgumentException("retries < 0");
         }
         return on(context -> {
-            int times = context.times();
+            long times = context.times();
             log.debug("Checks the limit of the maximum number of retries: times={}, retries={}", times, retries);
             if (times > retries) {
                 log.debug("Maximum number of retry attempts reached: times={}, retries={}", times, retries);

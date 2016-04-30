@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import static java.util.Collections.unmodifiableList;
 import java.util.List;
 import java.util.Optional;
-import lombok.AccessLevel;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 /**
- * Has the running information.
+ * The context that has the running information.
  */
-@RequiredArgsConstructor(access = AccessLevel.MODULE)
 public class RetryableContext {
 
     /**
      * The number of times.
      */
-    private int times = 0;
+    private long times = 0;
 
     /**
      * The exceptions that occurred.
@@ -25,11 +22,20 @@ public class RetryableContext {
     private final List<Exception> exceptions = new ArrayList<>();
 
     /**
+     * Constructs an instance.
+     */
+    RetryableContext() {
+    }
+
+    /**
      * Advances the times.
      *
      * @return this instance.
      */
     RetryableContext next() {
+        if (exceptions.size() != times) {
+            throw new IllegalStateException("The exception has not been stacked.");
+        }
         times++;
         return this;
     }
@@ -41,6 +47,9 @@ public class RetryableContext {
      * @return this instance.
      */
     RetryableContext fail(@NonNull Exception cause) {
+        if (exceptions.size() != times - 1L) {
+            throw new IllegalStateException("The time is not advanced.");
+        }
         exceptions.add(cause);
         return this;
     }
@@ -50,7 +59,7 @@ public class RetryableContext {
      *
      * @return the number of times.
      */
-    public int times() {
+    public long times() {
         return times;
     }
 

@@ -12,9 +12,9 @@ public class CannotRetryExceptionTest {
      * Tests for {@link CannotRetryException#CannotRetryException(String, Throwable, RetryableContext)}.
      */
     @Test
-    public void construct() {
-        String message = "the exception message";
-        Exception cause = new Exception("the cause message");
+    public void new_() {
+        String message = "the exception message.";
+        Exception cause = new Exception("the cause message.");
         RetryableContext context = new RetryableContext();
         CannotRetryException exception = new CannotRetryException(message, cause, context);
         assertThat(exception)
