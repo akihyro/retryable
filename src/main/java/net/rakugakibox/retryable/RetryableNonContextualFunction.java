@@ -1,7 +1,7 @@
 package net.rakugakibox.retryable;
 
 /**
- * Represents a retryable processing.
+ * The function that retryable processing.
  * Does not have a context argument. Has a return value.
  *
  * @param <T> the result type.
@@ -10,11 +10,11 @@ package net.rakugakibox.retryable;
 public interface RetryableNonContextualFunction<T> {
 
     /**
-     * Runs the retryable processing.
+     * Calls the function.
      *
      * @return the result.
      * @throws Exception if an exception occurs.
      */
-    T run() throws Exception;
+    T call() throws Exception;
 
 }

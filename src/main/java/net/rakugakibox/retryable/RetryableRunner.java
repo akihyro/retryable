@@ -39,7 +39,7 @@ public class RetryableRunner<T> {
                 try {
                     context.next();
                     log.debug("Runs the function: function={}, context={}", function, context);
-                    return function.run(context);
+                    return function.call(context);
                 } catch (Exception exception) {
                     context.fail(exception);
                     log.debug("Function failed. Runs the retry handleer: "

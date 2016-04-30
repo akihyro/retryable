@@ -1,14 +1,14 @@
 package net.rakugakibox.retryable;
 
 /**
- * Represents a retryable processing.
+ * The procedure that retryable processing.
  * Has a context argument. Does not have a return value.
  */
 @FunctionalInterface
 public interface RetryableProcedure {
 
     /**
-     * Runs the retryable processing.
+     * Runs the procedure.
      *
      * @param context the context.
      * @throws Exception if an exception occurs.
