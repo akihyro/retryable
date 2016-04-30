@@ -3,7 +3,7 @@ package net.rakugakibox.retryable;
 import lombok.NonNull;
 
 /**
- * Represents a retry processing.
+ * The handler that performs retry processing.
  */
 @FunctionalInterface
 public interface RetryHandler {
@@ -30,9 +30,9 @@ public interface RetryHandler {
     }
 
     /**
-     * Returns the handler that does nothing.
+     * Returns a handler that does nothing.
      *
-     * @return the handler that does nothing.
+     * @return a handler that does nothing.
      */
     static RetryHandler nop() {
         return context -> {};
