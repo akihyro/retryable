@@ -114,28 +114,56 @@ public class Retryable {
     }
 
     /**
-     * Returns the runner.
+     * Returns a processor.
      *
      * @param <T> the result type.
-     * @param function the retryable processing.
-     * @return the runner.
+     * @param process the retryable process.
+     * @return a processor.
      */
-    public <T> RetryableRunner<T> function(RetryableFunction<T> function) {
-        return new RetryableRunner<>(function, handler);
+    public <T> RetryableProcessor<T> process(RetryableProcess<T> process) {
+        return new RetryableProcessor<>(process, handler);
     }
 
     /**
-     * Returns the runner.
-     * The runner always returns null.
+     * Returns a processor.
      *
-     * @param procedure the retryable processing.
-     * @return the runner.
+     * @param <T> the result type.
+     * @param function the retryable process.
+     * @return a processor.
      */
-    public RetryableRunner<?> procedure(RetryableProcedure procedure) {
-        return function(context -> {
-            procedure.run(context);
-            return null;
-        });
+    public <T> RetryableProcessor<T> function(RetryableProcess.Function<T> function) {
+        return process(function);
+    }
+
+    /**
+     * Returns a processor.
+     *
+     * @param <T> the result type.
+     * @param function the retryable process.
+     * @return a processor.
+     */
+    public <T> RetryableProcessor<T> function(RetryableProcess.NonContextualFunction<T> function) {
+        return process(function);
+    }
+
+    /**
+     * Returns a processor.
+     *
+     * @param procedure the retryable process.
+     * @return a processor.
+     */
+    public RetryableProcessor<Void> procedure(RetryableProcess.Procedure procedure) {
+        return process(procedure);
+    }
+
+    /**
+     * Returns a processor.
+     *
+     * @param procedure the retryable process.
+     * @return a processor.
+     */
+    public RetryableProcessor<Void> procedure(RetryableProcess.NonContextualProcedure procedure) {
+        return process(procedure);
     }
 
 }

@@ -3,13 +3,13 @@ package net.rakugakibox.retryable;
 import lombok.NonNull;
 
 /**
- * The handler that performs retry processing.
+ * The retry handler.
  */
 @FunctionalInterface
 public interface RetryHandler {
 
     /**
-     * Handles the retry processing.
+     * Handles the handler.
      *
      * @param context the context.
      * @throws CannotRetryException if cannot retry.
