@@ -1,6 +1,7 @@
 package net.rakugakibox.retryable;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.Test;
 
 /**
@@ -19,6 +20,16 @@ public class RetryHandlerTest {
         handler1.andThen(handler2).handle(new RetryableContext().next());
         assertThat(string)
                 .hasToString("first: 1 times; second: 1 times; ");
+    }
+
+    /**
+     * Tests for {@link RetryHandler#andThen(RetryHandler)}.
+     */
+    @Test
+    public void andThen_passNullToHandler() {
+        RetryHandler handler = RetryHandler.nop();
+        assertThatThrownBy(() -> handler.andThen(null))
+                .isInstanceOf(NullPointerException.class);
     }
 
     /**

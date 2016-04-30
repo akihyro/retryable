@@ -19,13 +19,13 @@ public interface RetryHandler {
     /**
      * Composes the handler.
      *
-     * @param after the subsequent handler.
+     * @param handler the subsequent handler.
      * @return the composed handler.
      */
-    default RetryHandler andThen(@NonNull RetryHandler after) {
+    default RetryHandler andThen(@NonNull RetryHandler handler) {
         return context -> {
             handle(context);
-            after.handle(context);
+            handler.handle(context);
         };
     }
 
