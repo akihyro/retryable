@@ -4,13 +4,13 @@ machine:
 
 dependencies:
   override:
-    - "mvn dependency:go-offline"
+    - "mvn --batch-mode dependency:go-offline"
   cache_directories:
     - "~/.m2"
 
 test:
   override:
-    - "mvn clean install site"
+    - "mvn --batch-mode clean install site"
 
 general:
   artifacts:
