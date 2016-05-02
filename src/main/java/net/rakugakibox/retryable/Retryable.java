@@ -23,6 +23,12 @@ public class Retryable {
     private RetryHandler handler = RetryHandler.nop();
 
     /**
+     * Constructs an instance.
+     */
+    public Retryable() {
+    }
+
+    /**
      * Adds the retry processing.
      *
      * @param handler the retry processing.
